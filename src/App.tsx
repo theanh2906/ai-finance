@@ -89,7 +89,7 @@ function App() {
             <div className="flex flex-col items-center justify-center space-y-12 max-w-4xl mx-auto animate-in fade-in slide-in-from-bottom-8 duration-700">
               <div className="space-y-6 text-center">
                 <div className="inline-flex items-center justify-center px-4 py-1.5 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-300 text-sm font-medium mb-4">
-                  Powered by Google Gemini-1.5-Flash
+                  Powered by Google Gemini-3-Flash
                 </div>
                 <h2 className="text-5xl md:text-6xl lg:text-7xl font-black tracking-tight leading-tight">
                   Analyze your <br className="hidden md:block" />
