@@ -6,7 +6,7 @@ import type { AnalysisType, UniversalAnalysisResult } from './types';
 import { Bot, RefreshCw, Github, FileText, CreditCard } from 'lucide-react';
 
 function App() {
-  const apiKey = import.meta.env.GEMINI_API_KEY || '';
+  const apiKey = import.meta.env.VITE_GEMINI_API_KEY || '';
   const [result, setResult] = useState<UniversalAnalysisResult | null>(null);
   const [docType, setDocType] = useState<AnalysisType>('statement');
   const [loading, setLoading] = useState(false);
@@ -14,7 +14,7 @@ function App() {
 
   const handleFileSelect = async (file: File) => {
     if (!apiKey) {
-      setError("GEMINI_API_KEY is not set in the .env file.");
+      setError("VITE_GEMINI_API_KEY is not set in the .env file.");
       return;
     }
 
@@ -79,7 +79,7 @@ function App() {
           <div className="mb-8 p-6 bg-red-500/10 border border-red-500/20 rounded-2xl flex flex-col items-center justify-center text-center">
             <h3 className="text-red-400 font-bold mb-2 text-lg">Missing API Key</h3>
             <p className="text-red-200 text-sm max-w-lg">
-              Please create a <code className="bg-black/30 px-2 py-1 rounded">.env</code> file in the root directory and set <code className="bg-black/30 px-2 py-1 rounded">GEMINI_API_KEY="your_api_key_here"</code>.
+              Please create a <code className="bg-black/30 px-2 py-1 rounded">.env</code> file in the root directory and set <code className="bg-black/30 px-2 py-1 rounded">VITE_GEMINI_API_KEY="your_api_key_here"</code>.
             </p>
           </div>
         )}
