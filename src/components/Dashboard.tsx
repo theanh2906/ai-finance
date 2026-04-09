@@ -2,6 +2,7 @@ import React from 'react';
 import type { UniversalAnalysisResult } from '../types';
 import { StatementDashboard } from './StatementDashboard';
 import { PayslipDashboard } from './PayslipDashboard';
+import { CreditCardDashboard } from './CreditCardDashboard';
 
 interface DashboardProps {
   data: UniversalAnalysisResult;
@@ -14,6 +15,10 @@ export const Dashboard: React.FC<DashboardProps> = ({ data }) => {
 
   if (data.type === 'payslip') {
     return <PayslipDashboard data={data} />;
+  }
+
+  if (data.type === 'credit_card') {
+    return <CreditCardDashboard data={data} />;
   }
 
   return (

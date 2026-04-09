@@ -81,7 +81,7 @@ export const PayslipDashboard: React.FC<PayslipDashboardProps> = ({ data }) => {
 
       {/* Info Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div className="bg-slate-900/50 backdrop-blur-md border border-white/10 rounded-3xl p-8 shadow-xl">
+        <div className="bg-slate-900/50 backdrop-blur-md border border-white/10 rounded-3xl p-5 sm:p-8 shadow-xl">
            <div className="flex items-center gap-4 mb-8">
               <div className="p-3 bg-indigo-500/10 rounded-2xl border border-indigo-500/20">
                 <Building2 className="text-indigo-400 w-6 h-6" />
@@ -102,7 +102,7 @@ export const PayslipDashboard: React.FC<PayslipDashboardProps> = ({ data }) => {
            </div>
         </div>
 
-        <div className="bg-slate-900/50 backdrop-blur-md border border-white/10 rounded-3xl p-8 shadow-xl">
+        <div className="bg-slate-900/50 backdrop-blur-md border border-white/10 rounded-3xl p-5 sm:p-8 shadow-xl">
           <h3 className="text-2xl font-bold mb-6 text-white flex items-center gap-3">
              Deductions Breakdown
           </h3>
@@ -124,6 +124,7 @@ export const PayslipDashboard: React.FC<PayslipDashboardProps> = ({ data }) => {
                   ))}
                 </Pie>
                 <Tooltip 
+                  formatter={(value: any) => new Intl.NumberFormat('en-US', { style: 'currency', currency: summary.currency }).format(value)}
                   contentStyle={{ 
                     background: 'rgba(15, 23, 42, 0.9)', 
                     border: '1px solid rgba(255,255,255,0.1)', 
@@ -140,7 +141,7 @@ export const PayslipDashboard: React.FC<PayslipDashboardProps> = ({ data }) => {
       </div>
 
       {/* AI Insights */}
-      <div className="bg-slate-900/50 backdrop-blur-md border border-white/10 rounded-3xl p-8 shadow-xl">
+      <div className="bg-slate-900/50 backdrop-blur-md border border-white/10 rounded-3xl p-5 sm:p-8 shadow-xl">
         <h3 className="text-2xl font-bold mb-8 text-white flex items-center gap-3">
           <div className="p-2 bg-indigo-500/20 rounded-xl">
             <TrendingUp className="w-6 h-6 text-indigo-400" />
@@ -162,28 +163,28 @@ export const PayslipDashboard: React.FC<PayslipDashboardProps> = ({ data }) => {
 
       {/* Deductions List */}
        <div className="bg-slate-900/50 backdrop-blur-md border border-white/10 rounded-3xl shadow-xl overflow-hidden">
-        <div className="p-8 border-b border-white/10">
+        <div className="p-5 sm:p-8 border-b border-white/10">
           <h3 className="text-2xl font-bold text-white">Itemized Deductions</h3>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-black/20 text-slate-400 text-sm uppercase tracking-wider">
-                <th className="px-8 py-5 font-semibold">Description</th>
-                <th className="px-8 py-5 font-semibold">Type</th>
-                <th className="px-8 py-5 font-semibold text-right">Amount</th>
+                <th className="px-4 py-4 sm:px-8 sm:py-5 font-semibold">Description</th>
+                <th className="px-4 py-4 sm:px-8 sm:py-5 font-semibold">Type</th>
+                <th className="px-4 py-4 sm:px-8 sm:py-5 font-semibold text-right">Amount</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
               {deductions.map((d, i) => (
                 <tr key={i} className="hover:bg-white/5 transition-colors">
-                  <td className="px-8 py-5 font-medium text-white">{d.description}</td>
-                  <td className="px-8 py-5">
+                  <td className="px-4 py-4 sm:px-8 sm:py-5 font-medium text-white">{d.description}</td>
+                  <td className="px-4 py-4 sm:px-8 sm:py-5">
                     <span className="px-3 py-1 bg-white/5 text-slate-400 border border-white/10 rounded-lg text-xs capitalize">
                       {d.type}
                     </span>
                   </td>
-                  <td className="px-8 py-5 text-right font-bold text-pink-400">
+                  <td className="px-4 py-4 sm:px-8 sm:py-5 text-right font-bold text-pink-400 whitespace-nowrap">
                     - {new Intl.NumberFormat('en-US', { style: 'currency', currency: summary.currency }).format(Math.abs(d.amount))}
                   </td>
                 </tr>

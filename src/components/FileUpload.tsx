@@ -54,7 +54,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFileSelect, isLoading 
       >
         <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
         
-        <div className="relative bg-slate-900/80 backdrop-blur-xl rounded-[1.35rem] p-10 md:p-16 flex flex-col items-center justify-center text-center border border-white/5 h-full min-h-[320px]">
+        <div className="relative bg-slate-900/80 backdrop-blur-xl rounded-[1.35rem] p-6 sm:p-10 md:p-16 flex flex-col items-center justify-center text-center border border-white/5 h-full min-h-[260px] md:min-h-[320px]">
           <input
             type="file"
             ref={fileInputRef}

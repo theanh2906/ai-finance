@@ -56,7 +56,7 @@ function App() {
               <Bot className="w-6 h-6 text-white" />
             </div>
             <h1 className="text-2xl font-black bg-clip-text text-transparent bg-gradient-to-r from-white via-indigo-100 to-indigo-300 tracking-tight">
-              FinAI Analyzer
+              Document Analyzer
             </h1>
           </div>
 
@@ -93,15 +93,15 @@ function App() {
                 </div>
                 <h2 className="text-5xl md:text-6xl lg:text-7xl font-black tracking-tight leading-tight">
                   Analyze your <br className="hidden md:block" />
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-pink-400">financial docs</span> instantly
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-pink-400">documents</span> instantly
                 </h2>
                 <p className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed">
-                  Unlock powerful financial insights from your data in seconds. Select a document type and upload your file.
-                </p>
+                  Unlock powerful insights from your data in seconds. Select a document type and upload your file.
+                </p>s
               </div>
 
               {/* Document Type Selector */}
-              <div className="flex p-1 bg-white/5 border border-white/10 rounded-2xl w-full max-w-md mx-auto">
+              <div className="flex flex-col sm:flex-row p-1 gap-1 sm:gap-0 bg-white/5 border border-white/10 rounded-2xl w-full max-w-md mx-auto">
                 <button
                   onClick={() => setDocType('statement')}
                   className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl transition-all duration-300 ${
@@ -124,6 +124,17 @@ function App() {
                   <FileText className="w-4 h-4" />
                   <span className="font-semibold">Payslip</span>
                 </button>
+                <button
+                  onClick={() => setDocType('credit_card')}
+                  className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl transition-all duration-300 ${
+                    docType === 'credit_card' 
+                    ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/20' 
+                    : 'text-slate-400 hover:text-white hover:bg-white/5'
+                  }`}
+                >
+                  <CreditCard className="w-4 h-4" />
+                  <span className="font-semibold">Credit Card</span>
+                </button>
               </div>
               
               <div className="w-full">
@@ -141,17 +152,17 @@ function App() {
               <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 pb-6 border-b border-white/10">
                 <div>
                   <h2 className="text-4xl font-black bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400 mb-2">
-                    {result.type === 'statement' ? result.summary.bankName : result.summary.employerName} Analysis
+                    {result.type === 'statement' ? result.summary.bankName : result.type === 'payslip' ? result.summary.employerName : `${result.summary.cardHolder}'s Credit Card`} Analysis
                   </h2>
                   <p className="text-slate-400 text-lg flex items-center gap-2">
                     Extracted details for <strong className="text-white bg-white/10 px-3 py-1 rounded-lg">
-                      {result.type === 'statement' ? result.summary.accountHolder : result.summary.employeeName}
+                      {result.type === 'statement' ? result.summary.accountHolder : result.type === 'payslip' ? result.summary.employeeName : result.summary.statementDate}
                     </strong>
                   </p>
                 </div>
                 <button 
                   onClick={handleReset}
-                  className="bg-white/5 hover:bg-white/10 border border-white/10 text-white px-6 py-3 rounded-xl font-medium transition-all flex items-center gap-2 hover:scale-105 active:scale-95 shadow-lg whitespace-nowrap"
+                  className="bg-white/5 hover:bg-white/10 border border-white/10 text-white px-6 py-3 rounded-xl font-medium transition-all flex items-center justify-center gap-2 hover:scale-105 active:scale-95 shadow-lg whitespace-nowrap w-full sm:w-auto"
                 >
                   <RefreshCw className="w-4 h-4" />
                   Upload Another

@@ -96,7 +96,7 @@ export const StatementDashboard: React.FC<StatementDashboardProps> = ({ data }) 
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Category Breakdown */}
-        <div className="bg-slate-900/50 backdrop-blur-md border border-white/10 rounded-3xl p-8 shadow-xl flex flex-col">
+        <div className="bg-slate-900/50 backdrop-blur-md border border-white/10 rounded-3xl p-5 sm:p-8 shadow-xl flex flex-col">
           <div className="flex items-center justify-between mb-8">
             <h3 className="text-2xl font-bold text-white flex items-center gap-3">
               <div className="p-2 bg-indigo-500/20 rounded-xl">
@@ -124,6 +124,7 @@ export const StatementDashboard: React.FC<StatementDashboardProps> = ({ data }) 
                   ))}
                 </Pie>
                 <Tooltip 
+                  formatter={(value: any) => new Intl.NumberFormat('en-US', { style: 'currency', currency: summary.currency }).format(value)}
                   contentStyle={{ 
                     background: 'rgba(15, 23, 42, 0.9)', 
                     border: '1px solid rgba(255,255,255,0.1)', 
@@ -140,7 +141,7 @@ export const StatementDashboard: React.FC<StatementDashboardProps> = ({ data }) 
         </div>
 
         {/* AI Insights */}
-        <div className="bg-slate-900/50 backdrop-blur-md border border-white/10 rounded-3xl p-8 shadow-xl">
+        <div className="bg-slate-900/50 backdrop-blur-md border border-white/10 rounded-3xl p-5 sm:p-8 shadow-xl">
           <h3 className="text-2xl font-bold mb-8 text-white flex items-center gap-3">
             <div className="p-2 bg-pink-500/20 rounded-xl">
               <TrendingUp className="w-6 h-6 text-pink-400" />
@@ -165,7 +166,7 @@ export const StatementDashboard: React.FC<StatementDashboardProps> = ({ data }) 
 
       {/* Transaction Table */}
       <div className="bg-slate-900/50 backdrop-blur-md border border-white/10 rounded-3xl shadow-xl overflow-hidden">
-        <div className="p-8 border-b border-white/10 flex items-center gap-3">
+        <div className="p-5 sm:p-8 border-b border-white/10 flex items-center gap-3">
           <div className="p-2 bg-slate-800 rounded-xl">
             <ArrowRightLeft className="w-6 h-6 text-slate-300" />
           </div>
@@ -175,23 +176,23 @@ export const StatementDashboard: React.FC<StatementDashboardProps> = ({ data }) 
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-black/20 text-slate-400 text-sm uppercase tracking-wider">
-                <th className="px-8 py-5 font-semibold">Date</th>
-                <th className="px-8 py-5 font-semibold">Description</th>
-                <th className="px-8 py-5 font-semibold">Category</th>
-                <th className="px-8 py-5 font-semibold text-right">Amount</th>
+                <th className="px-4 py-4 sm:px-8 sm:py-5 font-semibold">Date</th>
+                <th className="px-4 py-4 sm:px-8 sm:py-5 font-semibold">Description</th>
+                <th className="px-4 py-4 sm:px-8 sm:py-5 font-semibold">Category</th>
+                <th className="px-4 py-4 sm:px-8 sm:py-5 font-semibold text-right">Amount</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
               {transactions.map((t, i) => (
                 <tr key={i} className="hover:bg-white/5 transition-colors group">
-                  <td className="px-8 py-5 text-sm text-slate-300 whitespace-nowrap">{t.date}</td>
-                  <td className="px-8 py-5 font-medium text-white">{t.description}</td>
-                  <td className="px-8 py-5">
+                  <td className="px-4 py-4 sm:px-8 sm:py-5 text-sm text-slate-300 whitespace-nowrap">{t.date}</td>
+                  <td className="px-4 py-4 sm:px-8 sm:py-5 font-medium text-white">{t.description}</td>
+                  <td className="px-4 py-4 sm:px-8 sm:py-5">
                     <span className="px-3 py-1.5 bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 rounded-lg text-xs font-semibold whitespace-nowrap">
                       {t.category}
                     </span>
                   </td>
-                  <td className={`px-8 py-5 text-right font-bold text-base whitespace-nowrap ${t.type === 'income' ? 'text-emerald-400' : 'text-pink-400'}`}>
+                  <td className={`px-4 py-4 sm:px-8 sm:py-5 text-right font-bold text-base whitespace-nowrap ${t.type === 'income' ? 'text-emerald-400' : 'text-pink-400'}`}>
                     {t.type === 'income' ? '+' : '-'} {new Intl.NumberFormat('en-US', { style: 'currency', currency: summary.currency }).format(Math.abs(t.amount))}
                   </td>
                 </tr>

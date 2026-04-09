@@ -7,6 +7,53 @@ import {
 } from "@google/generative-ai";
 import type { UniversalAnalysisResult, AnalysisType } from "../types";
 
+const creditCardSchema: Schema = {
+  type: SchemaType.OBJECT,
+  properties: {
+    summary: {
+      type: SchemaType.OBJECT,
+      properties: {
+        cardHolder: { type: SchemaType.STRING },
+        statementDate: { type: SchemaType.STRING },
+        totalNewCharges: { type: SchemaType.NUMBER },
+        currency: { type: SchemaType.STRING, description: "e.g., VND, USD" },
+      },
+      required: ["cardHolder", "statementDate", "totalNewCharges", "currency"],
+    },
+    categories: {
+      type: SchemaType.ARRAY,
+      items: {
+        type: SchemaType.OBJECT,
+        properties: {
+          category: {
+            type: SchemaType.STRING,
+            description:
+              "Vietnamese translated categories like Sức khỏe & Y tế, Ăn uống & Siêu thị, ...",
+          },
+          amount: { type: SchemaType.NUMBER },
+          percentage: {
+            type: SchemaType.NUMBER,
+            description: "Percentage of total new charges (0 to 100)",
+          },
+          note: {
+            type: SchemaType.STRING,
+            description:
+              "Summarized note about the largest expenses or related details in this category",
+          },
+        },
+        required: ["category", "amount", "percentage", "note"],
+      },
+    },
+    insights: {
+      type: SchemaType.ARRAY,
+      items: {
+        type: SchemaType.STRING,
+      },
+    },
+  },
+  required: ["summary", "categories", "insights"],
+};
+
 const statementSchema: Schema = {
   type: SchemaType.OBJECT,
   properties: {
@@ -124,11 +171,19 @@ export async function analyzeDocument(
 ): Promise<UniversalAnalysisResult> {
   const genAI = new GoogleGenerativeAI(apiKey);
 
-  const schema = type === "statement" ? statementSchema : payslipSchema;
-  const prompt =
-    type === "statement"
-      ? "Analyze this bank statement. Provide a summary and a list of transactions."
-      : "Analyze this payslip. Provide a summary including Gross Pay, Net Pay, and a detailed list of deductions.";
+  let schema = statementSchema;
+  let prompt =
+    "Analyze this bank statement. Provide a summary and a list of transactions.";
+
+  if (type === "payslip") {
+    schema = payslipSchema;
+    prompt =
+      "Analyze this payslip. Provide a summary including Gross Pay, Net Pay, and a detailed list of deductions.";
+  } else if (type === "credit_card") {
+    schema = creditCardSchema;
+    prompt =
+      "Analyze this credit card statement. Provide a summary with total new charges. Group all expenses into categories (like Sức khỏe & Y tế, Ăn uống & Siêu thị, v.v.), calculate the total amount per category, the percentage of each category relative to the total, and add a brief note for each category highlighting key expenses or details. Write the note and categories in Vietnamese.";
+  }
 
   const model = genAI.getGenerativeModel({
     model: "gemini-3-flash-preview",

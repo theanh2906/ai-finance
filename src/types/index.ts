@@ -6,7 +6,7 @@ export interface Transaction {
   category: string;
 }
 
-export type AnalysisType = "statement" | "payslip";
+export type AnalysisType = "statement" | "payslip" | "credit_card";
 
 export interface StatementSummary {
   bankName: string;
@@ -48,7 +48,31 @@ export interface PayslipResult {
   insights: string[];
 }
 
-export type UniversalAnalysisResult = StatementResult | PayslipResult;
+export interface CreditCardSummary {
+  cardHolder: string;
+  statementDate: string;
+  totalNewCharges: number;
+  currency: string;
+}
+
+export interface CreditCardCategorySummary {
+  category: string;
+  amount: number;
+  percentage: number;
+  note: string;
+}
+
+export interface CreditCardResult {
+  type: "credit_card";
+  summary: CreditCardSummary;
+  categories: CreditCardCategorySummary[];
+  insights: string[];
+}
+
+export type UniversalAnalysisResult =
+  | StatementResult
+  | PayslipResult
+  | CreditCardResult;
 
 // Compatibility type for existing code that hasn't been migrated yet
 export type AnalysisResult = StatementResult;
