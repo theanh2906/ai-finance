@@ -3,18 +3,31 @@ import { FileUpload } from './components/FileUpload';
 import { Dashboard } from './components/Dashboard';
 import { analyzeDocument } from './lib/gemini';
 import type { AnalysisType, UniversalAnalysisResult } from './types';
-import { Bot, RefreshCw, Github, FileText, CreditCard } from 'lucide-react';
+import { Bot, RefreshCw, Github, FileText, CreditCard, Key } from 'lucide-react';
 
 function App() {
-  const apiKey = import.meta.env.VITE_GEMINI_API_KEY || '';
+  const [apiKey, setApiKey] = useState(() => localStorage.getItem('gemini_api_key') || '');
+  const [tempApiKey, setTempApiKey] = useState(apiKey);
   const [result, setResult] = useState<UniversalAnalysisResult | null>(null);
   const [docType, setDocType] = useState<AnalysisType>('statement');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const handleSaveApiKey = () => {
+    localStorage.setItem('gemini_api_key', tempApiKey);
+    setApiKey(tempApiKey);
+  };
+
+  const clearApiKey = () => {
+    localStorage.removeItem('gemini_api_key');
+    setApiKey('');
+    setTempApiKey('');
+    setResult(null);
+  };
+
   const handleFileSelect = async (file: File) => {
     if (!apiKey) {
-      setError("VITE_GEMINI_API_KEY is not set in the .env file.");
+      setError("Please set your Gemini API Key first.");
       return;
     }
 
@@ -61,7 +74,15 @@ function App() {
           </div>
 
           <div className="flex items-center gap-4 text-slate-400">
-            <a 
+            {apiKey && (
+              <button 
+                onClick={clearApiKey}
+                className="text-sm px-3 py-1.5 rounded-lg border border-white/10 hover:bg-white/10 transition-colors"
+              >
+                Clear API Key
+              </button>
+            )}
+            <a
               href="https://github.com" 
               target="_blank" 
               rel="noopener noreferrer"
@@ -76,11 +97,30 @@ function App() {
       {/* Main Content */}
       <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 py-12 lg:py-20 relative z-10 w-full flex flex-col justify-center">
         {!apiKey && (
-          <div className="mb-8 p-6 bg-red-500/10 border border-red-500/20 rounded-2xl flex flex-col items-center justify-center text-center">
-            <h3 className="text-red-400 font-bold mb-2 text-lg">Missing API Key</h3>
-            <p className="text-red-200 text-sm max-w-lg">
-              Please create a <code className="bg-black/30 px-2 py-1 rounded">.env</code> file in the root directory and set <code className="bg-black/30 px-2 py-1 rounded">VITE_GEMINI_API_KEY="your_api_key_here"</code>.
+          <div className="mb-8 p-6 bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center justify-center text-center max-w-2xl mx-auto w-full">
+            <div className="w-12 h-12 bg-indigo-500/20 rounded-xl flex items-center justify-center mb-4 border border-indigo-500/30">
+              <Key className="w-6 h-6 text-indigo-400" />
+            </div>
+            <h3 className="text-white font-bold mb-2 text-xl">Enter your Gemini API Key</h3>
+            <p className="text-slate-400 text-sm max-w-lg mb-6">
+              Your API key is stored locally in your browser. It is never sent to our servers.
             </p>
+            <div className="flex w-full max-w-md gap-3">
+              <input
+                type="password"
+                value={tempApiKey}
+                onChange={(e) => setTempApiKey(e.target.value)}
+                placeholder="AIzaSy..."
+                className="flex-1 bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
+              />
+              <button
+                onClick={handleSaveApiKey}
+                disabled={!tempApiKey}
+                className="bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed text-white px-6 py-3 rounded-xl font-medium transition-colors"
+              >
+                Save
+              </button>
+            </div>
           </div>
         )}
 
