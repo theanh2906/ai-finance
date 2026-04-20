@@ -1,8 +1,10 @@
+'use client';
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import { CreditCard, Calendar, DollarSign, ExternalLink } from 'lucide-react';
-import type { CreditCardResult } from '../types';
+import type { CreditCardResult } from '@/types';
 
 interface CreditCardDashboardProps {
   data: CreditCardResult;

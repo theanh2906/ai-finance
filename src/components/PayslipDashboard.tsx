@@ -1,8 +1,10 @@
+'use client';
+
 import React from 'react';
 import { 
   PieChart, Pie, Cell, Legend, ResponsiveContainer, Tooltip
 } from 'recharts';
-import type { PayslipResult } from '../types';
+import type { PayslipResult } from '@/types';
 import { TrendingUp, Wallet, Calendar, PieChart as PieIcon, Building2, User } from 'lucide-react';
 
 interface PayslipDashboardProps {

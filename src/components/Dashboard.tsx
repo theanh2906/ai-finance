@@ -1,5 +1,7 @@
+'use client';
+
 import React from 'react';
-import type { UniversalAnalysisResult } from '../types';
+import type { UniversalAnalysisResult } from '@/types';
 import { StatementDashboard } from './StatementDashboard';
 import { PayslipDashboard } from './PayslipDashboard';
 import { CreditCardDashboard } from './CreditCardDashboard';

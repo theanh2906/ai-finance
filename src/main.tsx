@@ -1,10 +1,3 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.tsx'
-
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+// This file is the old Vite entry point, kept for reference.
+// Next.js uses app/layout.tsx and app/page.tsx as entry points.
+export {};

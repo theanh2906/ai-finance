@@ -1,8 +1,10 @@
+'use client';
+
 import React from 'react';
 import { 
   PieChart, Pie, Cell, Legend, ResponsiveContainer, Tooltip
 } from 'recharts';
-import type { StatementResult } from '../types';
+import type { StatementResult } from '@/types';
 import { TrendingUp, TrendingDown, Wallet, Calendar, PieChart as PieIcon, ArrowRightLeft } from 'lucide-react';
 
 interface StatementDashboardProps {
