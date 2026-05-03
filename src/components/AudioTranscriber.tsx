@@ -1,13 +1,14 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Copy, RefreshCw, Upload, Link as LinkIcon, FileAudio, Play } from 'lucide-react';
 
 interface AudioTranscriberProps {
   apiKey: string;
+  initialUrl?: string;
 }
 
-export function AudioTranscriber({ apiKey }: AudioTranscriberProps) {
+export function AudioTranscriber({ apiKey, initialUrl }: AudioTranscriberProps) {
   const [inputType, setInputType] = useState<'upload' | 'url'>('upload');
   const [audioUrl, setAudioUrl] = useState('');
   const [audioFile, setAudioFile] = useState<File | null>(null);
@@ -15,6 +16,29 @@ export function AudioTranscriber({ apiKey }: AudioTranscriberProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+
+  // Auto-populate URL and trigger transcription when initialUrl is provided via query param
+  useEffect(() => {
+    if (!initialUrl) return;
+    setInputType('url');
+    setAudioUrl(initialUrl);
+    if (!apiKey) return; // User will need to enter API key then trigger manually
+    setIsLoading(true);
+    setError(null);
+    fetch('/api/transcribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ audioUrl: initialUrl, apiKey }),
+    })
+      .then((res) => res.json().then((data) => ({ ok: res.ok, data })))
+      .then(({ ok, data }) => {
+        if (!ok) throw new Error(data.error || 'Transcription failed');
+        setTranscript(data.transcript);
+      })
+      .catch((err: any) => setError(err.message || 'An error occurred during transcription.'))
+      .finally(() => setIsLoading(false));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleCopy = () => {
     if (transcript) {

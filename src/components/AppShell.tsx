@@ -1,13 +1,20 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { FileUpload } from '@/components/FileUpload';
 import { Dashboard } from '@/components/Dashboard';
 import { AudioTranscriber } from '@/components/AudioTranscriber';
 import type { AnalysisType, UniversalAnalysisResult } from '@/types';
 import { Bot, RefreshCw, Github, FileText, CreditCard, Mic, FileSearch, Key } from 'lucide-react';
 
-export default function AppShell() {
+interface AppShellProps {
+  defaultActiveApp?: 'document' | 'audio';
+  initialAudioUrl?: string;
+}
+
+export default function AppShell({ defaultActiveApp = 'document', initialAudioUrl }: AppShellProps) {
+  const router = useRouter();
   const [apiKey, setApiKey] = useState(() => {
     if (typeof window !== 'undefined') {
       return localStorage.getItem('gemini_api_key') || '';
@@ -19,7 +26,7 @@ export default function AppShell() {
   const [docType, setDocType] = useState<AnalysisType>('statement');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [activeApp, setActiveApp] = useState<'document' | 'audio'>('document');
+  const [activeApp, setActiveApp] = useState<'document' | 'audio'>(defaultActiveApp);
 
   const handleSaveApiKey = () => {
     localStorage.setItem('gemini_api_key', tempApiKey);
@@ -90,7 +97,7 @@ export default function AppShell() {
           {/* App Switcher */}
           <div className="flex bg-white/5 border border-white/10 p-1 rounded-xl">
             <button
-              onClick={() => setActiveApp('document')}
+              onClick={() => router.push('/document')}
               className={`flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-medium transition-all ${
                 activeApp === 'document'
                 ? 'bg-gradient-to-r from-indigo-600 to-indigo-500 text-white shadow-lg'
@@ -101,7 +108,7 @@ export default function AppShell() {
               Document
             </button>
             <button
-              onClick={() => setActiveApp('audio')}
+              onClick={() => router.push('/audio')}
               className={`flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-medium transition-all ${
                 activeApp === 'audio'
                 ? 'bg-gradient-to-r from-pink-600 to-pink-500 text-white shadow-lg'
@@ -168,7 +175,7 @@ export default function AppShell() {
 
         <div className="w-full">
           {activeApp === 'audio' ? (
-            <AudioTranscriber apiKey={apiKey} />
+            <AudioTranscriber apiKey={apiKey} initialUrl={initialAudioUrl} />
           ) : !result ? (
             <div className="flex flex-col items-center justify-center space-y-12 max-w-4xl mx-auto animate-in fade-in slide-in-from-bottom-8 duration-700">
               <div className="space-y-6 text-center">
